@@ -74,7 +74,9 @@ Remember `ℕ = {0, 1, 2, ...}`, the natural numbers.
 
 @[autograded 2]
 theorem problem_1a : ∃ n : ℕ, ∀ x : ℕ, n ≤ x := by
-  sorry
+  existsi 0
+  fix x
+  positivity
   done
 
 
@@ -87,7 +89,9 @@ What if we swap them? The proof game changes!
 
 @[autograded 2]
 theorem problem_1b : ∀ n : ℕ, ∃ x : ℕ, n ≤ x := by
-  sorry
+  fix n
+  existsi n
+  linarith
   done
 
 /-
@@ -131,7 +135,7 @@ First, practice an introduction:
 
 @[autograded 1]
 theorem problem_2 : 220 ∣ 880 := by
-  sorry
+  numbers
   done
 
 /-
@@ -143,7 +147,12 @@ is also a divisor of 220.
 
 @[autograded 3]
 theorem problem_3 : ∀ x : ℕ, x ∣ 22 → x ∣ 88 := by
-  sorry
+  fix x
+  dsimp dvd
+  assume h
+  eliminate h with a hb
+  existsi 4 * a
+  linarith
   done
 
 
@@ -179,7 +188,11 @@ No need to start with `assume`.
 
 @[autograded 3]
 theorem problem_4 (a b : ℤ) (h : ∀ x : ℤ, 2*a ≤ x ∨ x ≤ 2*b) : a ≤ b := by
-  sorry
+  -- have hx : (a + b) := h (a + b)
+  have hab : 2*a ≤ (a + b) ∨ (a + b) ≤ 2*b := h (a + b)
+  eliminate hab with ha hb
+  {linarith}
+  {linarith}
   done
 
 
@@ -230,6 +243,10 @@ can you state and use?
 
 
 theorem bonus_challenge (p : Prop) : ¬ (p ↔ ¬ p) := by
+  -- assume h
+  -- {split_goal}
+  -- -- eliminate h with hp hq
+  -- {}
   sorry
 
 
